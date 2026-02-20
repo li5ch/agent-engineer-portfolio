@@ -1,0 +1,17 @@
+# 忽略文件
+.clawhub/
+memory/
+*.log
+*.tmp
+.DS_Store
+node_modules/
+.env
+.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OpenClaw工作区特定
+skills/
+*.pyc
+__pycache__/
