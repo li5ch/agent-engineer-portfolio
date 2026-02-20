@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术博客 - Agent Engineer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        main {
+            margin-top: 80px;
+            padding: 2rem 0;
+        }
+        
+        .blog-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+        
+        .blog-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .blog-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .blog-categories {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .blog-categories h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-list {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .category-tag {
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        
+        .category-tag:hover {
+            transform: translateY(-2px);
+        }
+        
+        .blog-posts {
+            display: grid;
+            gap: 2rem;
+        }
+        
+        .blog-post {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .blog-post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .blog-post h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        
+        .blog-meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .blog-meta i {
+            color: #667eea;
+        }
+        
+        .blog-excerpt {
+            color: #444;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .blog-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .blog-tag {
+            background: #f8f9fa;
+            color: #667eea;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            text-decoration: none;
+        }
+        
+        .read-more {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .read-more:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+        
+        .pagination a {
+            background: white;
+            color: #667eea;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .pagination a:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .pagination a.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        /* 响应式优化 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .blog-header h1 {
+                font-size: 2rem;
+            }
+            
+            .blog-post {
+                padding: 1.5rem;
+            }
+            
+            .category-list {
+                justify-content: center;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+        }
+        
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">🤖 Agent Engineer</div>
+            <ul class="nav-links">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="index.html#skills">技能</a></li>
+                <li><a href="index.html#projects">项目</a></li>
+                <li><a href="blog.html">博客</a></li>
+                <li><a href="index.html#contact">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="blog-header">
+                <h1>技术博客</h1>
+                <p>分享AI代理开发经验和最佳实践</p>
+            </div>
+
+            <div class="blog-categories">
+                <h2>文章分类</h2>
+                <div class="category-list">
+                    <a href="#" class="category-tag">AI代理架构</a>
+                    <a href="#" class="category-tag">强化学习</a>
+                    <a href="#" class="category-tag">系统设计</a>
+                    <a href="#" class="category-tag">性能优化</a>
+                    <a href="#" class="category-tag">实战案例</a>
+                    <a href="#" class="category-tag">技术趋势</a>
+                </div>
+            </div>
+
+            <div class="loading" id="blogLoading">
+                <div class="spinner"></div>
+                <p>正在加载文章...</p>
+            </div>
+
+            <div class="blog-posts" id="blogPosts">
+                <article class="blog-post">
+                    <h2>AI代理架构设计最佳实践</h2>
+                    <div class="blog-meta">
+                        <i class="fas fa-calendar"></i> 2026-02-15
+                        <i class="fas fa-user"></i> Agent Engineer
+                        <i class="fas fa-clock"></i> 阅读时间：8分钟
+                    </div>
+                    <div class="blog-excerpt">
+                        深入探讨现代AI代理系统的架构设计原则，包括模块化设计、状态管理和性能优化。本文将介绍如何构建可扩展、可维护的AI代理系统，涵盖感知模块、推理模块、行动模块的设计，以及状态管理、性能优化、错误处理和安全性考虑等方面。
+                    </div>
+                    <div class="blog-tags">
+                        <a href="#" class="blog-tag">AI代理</a>
+                        <a href="#" class="blog-tag">架构设计</a>
+                        <a href="#" class="blog-tag">模块化</a>
+                    </div>
+                    <a href="blog/ai-agent-architecture.html" class="read-more">阅读全文 →</a>
+                </article>
+
+                <article class="blog-post">
+                    <h2>强化学习在代理决策中的应用</h2>
+                    <div class="blog-meta">
+                        <i class="fas fa-calendar"></i> 2026-02-10
+                        <i class="fas fa-user"></i> Agent Engineer
+                        <i class="fas fa-clock"></i> 阅读时间：12分钟
+                    </div>
+                    <div class="blog-excerpt">
+                        分析强化学习算法如何提升AI代理的决策能力，包括Q-learning、DQN和PPO算法的实践应用。本文将介绍强化学习的基础概念、经典算法，以及在游戏AI、机器人控制、自动驾驶等领域的应用，还包含实践技巧和实际案例分析。
+                    </div>
+                    <div class="blog-tags">
+                        <a href="#" class="blog-tag">强化学习</a>
+                        <a href="#" class="blog-tag">Q-learning</a>
+                        <a href="#" class="blog-tag">DQN</a>
+                    </div>
+                    <a href="blog/reinforcement-learning.html" class="read-more">阅读全文 →</a>
+                </article>
+
+                <article class="blog-post">
+                    <h2>构建高可用AI代理系统</h2>
+                    <div class="blog-meta">
+                        <i class="fas fa-calendar"></i> 2026-02-05
+                        <i class="fas fa-user"></i> Agent Engineer
+                        <i class="fas fa-clock"></i> 阅读时间：10分钟
+                    </div>
+                    <div class="blog-excerpt">
+                        分享构建高可用AI代理系统的关键技术，包括负载均衡、故障恢复和监控告警。本文将详细介绍高可用性概述、架构设计原则、关键技术组件、性能优化策略、监控与告警、容灾备份等内容，帮助开发者构建可靠、高效的AI代理系统。
+                    </div>
+                    <div class="blog-tags">
+                        <a href="#" class="blog-tag">高可用性</a>
+                        <a href="#" class="blog-tag">负载均衡</a>
+                        <a href="#" class="blog-tag">故障恢复</a>
+                    </div>
+                    <a href="blog/high-availability.html" class="read-more">阅读全文 →</a>
+                </article>
+            </div>
+
+            <div class="pagination">
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">下一页 →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Agent Engineer. 专注于AI代理技术.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 模拟异步加载文章
+        function loadBlogPosts() {
+            const loading = document.getElementById('blogLoading');
+            const blogPosts = document.getElementById('blogPosts');
+            
+            loading.style.display = 'block';
+            blogPosts.style.display = 'none';
+            
+            // 模拟异步加载
+            setTimeout(() => {
+                loading.style.display = 'none';
+                blogPosts.style.display = 'grid';
+                
+                // 添加新文章（模拟动态加载）
+                const newPost = document.createElement('article');
+                newPost.className = 'blog-post';
+                newPost.innerHTML = `
+                    <h2>智能推荐系统的深度学习实践</h2>
+                    <div class="blog-meta">
+                        <i class="fas fa-calendar"></i> 2026-02-01
+                        <i class="fas fa-user"></i> Agent Engineer
+                        <i class="fas fa-clock"></i> 阅读时间：15分钟
+                    </div>
+                    <div class="blog-excerpt">
+                        探讨深度学习在智能推荐系统中的应用，包括协同过滤、深度神经网络、注意力机制等技术的实践。本文将介绍推荐系统的基本概念、深度学习模型的设计、训练优化策略，以及实际项目中的经验总结。
+                    </div>
+                    <div class="blog-tags">
+                        <a href="#" class="blog-tag">推荐系统</a>
+                        <a href="#" class="blog-tag">深度学习</a>
+                        <a href="#" class="blog-tag">协同过滤</a>
+                    </div>
+                    <a href="#" class="read-more">阅读全文 →</a>
+                `;
+                blogPosts.appendChild(newPost);
+            }, 2000);
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBlogPosts();
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

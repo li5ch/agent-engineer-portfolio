@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Engineer - 专业AI代理工程师</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        main {
+            margin-top: 80px;
+            padding: 2rem 0;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+        
+        .section {
+            background: white;
+            margin: 2rem 0;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .skill-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .skill-card i {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .project-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .project-card h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .contact-item i {
+            color: #667eea;
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        /* 搜索功能 */
+        .search-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 1001;
+            padding: 1rem;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-input {
+            padding: 8px 35px 8px 15px;
+            border: none;
+            border-radius: 25px;
+            width: 200px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: width 0.3s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            width: 300px;
+        }
+        
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+        }
+        
+        /* 博客功能 */
+        .blog-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .blog-post {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s;
+        }
+        
+        .blog-post:hover {
+            transform: translateY(-5px);
+        }
+        
+        .blog-post h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .blog-meta {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .read-more {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        /* 技能评分可视化 */
+        .skill-rating {
+            margin-top: 1rem;
+        }
+        
+        .rating-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        
+        .rating-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+        
+        .rating-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        /* 搜索结果 */
+        .search-results {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1002;
+            display: none;
+        }
+        
+        .search-result-item {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .search-result-item:hover {
+            background: #f5f5f5;
+        }
+        
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .search-result-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .search-result-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 响应式优化 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .search-container {
+                position: static;
+                padding: 1rem;
+                text-align: center;
+            }
+            
+            .search-input {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .search-results {
+                position: static;
+                max-width: 100%;
+                margin: 1rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 动画效果 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">🤖 Agent Engineer</div>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#skills">技能</a></li>
+                <li><a href="#projects">项目</a></li>
+                <li><a href="#blog">博客</a></li>
+                <li><a href="#contact">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 搜索功能 -->
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="搜索..." id="searchInput">
+            <button class="search-btn" onclick="performSearch()">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 搜索结果 -->
+    <div class="search-results" id="searchResults"></div>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1>AI代理工程师</h1>
+                <p>专注于构建智能、高效的AI代理系统</p>
+                <a href="#contact" class="cta-button">联系我</a>
+            </div>
+        </section>
+
+        <section id="skills" class="section fade-in">
+            <div class="container">
+                <h2>专业技能</h2>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <i class="fas fa-robot"></i>
+                        <h3>AI代理开发</h3>
+                        <p>设计并实现智能AI代理，具备自主决策和学习能力</p>
+                        <div class="skill-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 95%"></div>
+                            </div>
+                            <div class="rating-text">熟练度: 95%</div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-brain"></i>
+                        <h3>机器学习</h3>
+                        <p>应用深度学习和强化学习优化代理性能</p>
+                        <div class="skill-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 90%"></div>
+                            </div>
+                            <div class="rating-text">熟练度: 90%</div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-code"></i>
+                        <h3>全栈开发</h3>
+                        <p>从前端到后端的完整系统开发能力</p>
+                        <div class="skill-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 85%"></div>
+                            </div>
+                            <div class="rating-text">熟练度: 85%</div>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-cloud"></i>
+                        <h3>云原生</h3>
+                        <p>构建可扩展、高可用的云原生AI应用</p>
+                        <div class="skill-rating">
+                            <div class="rating-bar">
+                                <div class="rating-fill" style="width: 80%"></div>
+                            </div>
+                            <div class="rating-text">熟练度: 80%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section fade-in">
+            <div class="container">
+                <h2>项目展示</h2>
+                <div class="loading" id="projectsLoading">
+                    <div class="spinner"></div>
+                    <p>正在加载项目...</p>
+                </div>
+                <div class="projects-grid" id="projectsGrid">
+                    <div class="project-card">
+                        <h3>智能客服代理</h3>
+                        <p>基于大语言模型的智能客服系统，能够理解用户需求并提供准确回答</p>
+                        <p><strong>技术栈:</strong> Python, OpenAI API, FastAPI, React</p>
+                        <p><strong>状态:</strong> <span style="color: #28a745;">已完成</span></p>
+                    </div>
+                    <div class="project-card">
+                        <h3>自动化交易代理</h3>
+                        <p>使用强化学习构建的自动化交易系统，能够实时分析市场并执行交易</p>
+                        <p><strong>技术栈:</strong> TensorFlow, PyTorch, Docker, Kubernetes</p>
+                        <p><strong>状态:</strong> <span style="color: #ffc107;">开发中</span></p>
+                    </div>
+                    <div class="project-card">
+                        <h3>智能家居控制中心</h3>
+                        <p>集成多种IoT设备的智能家居控制代理，支持语音控制和自动化场景</p>
+                        <p><strong>技术栈:</strong> Node.js, TensorFlow.js, MQTT, Home Assistant</p>
+                        <p><strong>状态:</strong> <span style="color: #28a745;">已完成</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog" class="section fade-in">
+            <div class="container">
+                <h2>技术博客</h2>
+                <div class="blog-container">
+                    <div class="blog-post">
+                        <h3>AI代理架构设计最佳实践</h3>
+                        <div class="blog-meta">
+                            <i class="fas fa-calendar"></i> 2026-02-15
+                            <i class="fas fa-user"></i> Agent Engineer
+                        </div>
+                        <p>深入探讨现代AI代理系统的架构设计原则，包括模块化设计、状态管理和性能优化...</p>
+<<<<<<< HEAD
+                        <a href="blog/ai-agent-architecture.html" class="read-more">阅读更多 →</a>
+=======
+                        <a href="#" class="read-more">阅读更多 →</a>
+>>>>>>> origin/gh-pages
+                    </div>
+                    <div class="blog-post">
+                        <h3>强化学习在代理决策中的应用</h3>
+                        <div class="blog-meta">
+                            <i class="fas fa-calendar"></i> 2026-02-10
+                            <i class="fas fa-user"></i> Agent Engineer
+                        </div>
+                        <p>分析强化学习算法如何提升AI代理的决策能力，包括Q-learning、DQN和PPO算法的实践应用...</p>
+<<<<<<< HEAD
+                        <a href="blog/reinforcement-learning.html" class="read-more">阅读更多 →</a>
+=======
+                        <a href="#" class="read-more">阅读更多 →</a>
+>>>>>>> origin/gh-pages
+                    </div>
+                    <div class="blog-post">
+                        <h3>构建高可用AI代理系统</h3>
+                        <div class="blog-meta">
+                            <i class="fas fa-calendar"></i> 2026-02-05
+                            <i class="fas fa-user"></i> Agent Engineer
+                        </div>
+                        <p>分享构建高可用AI代理系统的关键技术，包括负载均衡、故障恢复和监控告警...</p>
+<<<<<<< HEAD
+                        <a href="blog/high-availability.html" class="read-more">阅读更多 →</a>
+=======
+                        <a href="#" class="read-more">阅读更多 →</a>
+>>>>>>> origin/gh-pages
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact fade-in">
+            <div class="container">
+                <h2>联系方式</h2>
+                <p>如果您有任何项目需求或技术问题，欢迎随时联系我</p>
+                <div class="contact-info">
+                    <a href="mailto:agent@example.com" class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>agent@example.com</span>
+                    </a>
+                    <a href="https://github.com/agentengineer" class="contact-item">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://linkedin.com/in/agentengineer" class="contact-item">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Agent Engineer. 专注于AI代理技术.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 搜索功能
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            const query = searchInput.value.trim();
+            
+            if (query === '') {
+                searchResults.style.display = 'none';
+                return;
+            }
+            
+            // 模拟搜索结果
+            const results = [
+                { title: 'AI代理开发', text: '专注于构建智能AI代理系统' },
+                { title: '机器学习', text: '应用深度学习和强化学习优化代理性能' },
+                { title: '全栈开发', text: '从前端到后端的完整系统开发能力' },
+                { title: '云原生', text: '构建可扩展、高可用的云原生AI应用' },
+                { title: '智能客服代理', text: '基于大语言模型的智能客服系统' },
+                { title: '自动化交易代理', text: '使用强化学习构建的自动化交易系统' },
+                { title: '智能家居控制中心', text: '集成多种IoT设备的智能家居控制代理' },
+                { title: '技术博客', text: '分享AI代理开发经验和最佳实践' }
+            ];
+            
+            const filteredResults = results.filter(result => 
+                result.title.toLowerCase().includes(query.toLowerCase()) ||
+                result.text.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            searchResults.innerHTML = '';
+            
+            if (filteredResults.length > 0) {
+                filteredResults.forEach(result => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    resultItem.innerHTML = `
+                        <div class="search-result-title">${result.title}</div>
+                        <div class="search-result-text">${result.text}</div>
+                    `;
+                    resultItem.onclick = () => {
+                        searchResults.style.display = 'none';
+                        searchInput.value = '';
+                        // 滚动到对应元素
+                        const element = document.querySelector(`[id="${result.title.toLowerCase().replace(/\s+/g, '')}"]`);
+                        if (element) {
+                            element.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    };
+                    searchResults.appendChild(resultItem);
+                });
+            } else {
+                searchResults.innerHTML = '<div class="search-result-item">没有找到相关结果</div>';
+            }
+            
+            searchResults.style.display = 'block';
+        }
+        
+        // 点击页面其他地方关闭搜索结果
+        document.addEventListener('click', function(event) {
+            const searchContainer = document.querySelector('.search-container');
+            const searchResults = document.getElementById('searchResults');
+            
+            if (!searchContainer.contains(event.target)) {
+                searchResults.style.display = 'none';
+            }
+        });
+        
+        // 回车键触发搜索
+        document.getElementById('searchInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+        
+        // 动态加载项目
+        function loadProjects() {
+            const loading = document.getElementById('projectsLoading');
+            const projectsGrid = document.getElementById('projectsGrid');
+            
+            loading.style.display = 'block';
+            projectsGrid.style.display = 'none';
+            
+            // 模拟异步加载
+            setTimeout(() => {
+                loading.style.display = 'none';
+                projectsGrid.style.display = 'grid';
+                
+                // 添加新项目
+                const newProject = document.createElement('div');
+                newProject.className = 'project-card';
+                newProject.innerHTML = `
+                    <h3>智能推荐系统</h3>
+                    <p>基于深度学习的个性化推荐代理，能够分析用户行为并提供精准推荐</p>
+                    <p><strong>技术栈:</strong> Python, TensorFlow, Redis, FastAPI</p>
+                    <p><strong>状态:</strong> <span style="color: #28a745;">已完成</span></p>
+                `;
+                projectsGrid.appendChild(newProject);
+            }, 2000);
+        }
+        
+        // 技能评分动画
+        function animateSkillRatings() {
+            const ratingFills = document.querySelectorAll('.rating-fill');
+            ratingFills.forEach(fill => {
+                const width = fill.style.width;
+                fill.style.width = '0%';
+                setTimeout(() => {
+                    fill.style.width = width;
+                }, 500);
+            });
+        }
+        
+        // 滚动显示动画
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementBottom = element.getBoundingClientRect().bottom;
+                
+                if (elementTop < window.innerHeight && elementBottom > 0) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟执行技能评分动画
+            setTimeout(animateSkillRatings, 1000);
+            
+            // 初始化滚动动画
+            handleScrollAnimation();
+            
+            // 监听滚动事件
+            window.addEventListener('scroll', handleScrollAnimation);
+            
+            // 延迟加载项目
+            setTimeout(loadProjects, 3000);
+        });
+        
+        // 响应式菜单
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        }
+    </script>
+</body>
+</html>

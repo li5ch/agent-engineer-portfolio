@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>强化学习在代理决策中的应用 - Agent Engineer技术博客</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        main {
+            margin-top: 80px;
+            padding: 2rem 0;
+        }
+        
+        .article-container {
+            background: white;
+            margin: 2rem 0;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .article-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .article-title {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        .article-meta {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .article-meta i {
+            color: #667eea;
+            margin-right: 0.5rem;
+        }
+        
+        .article-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        
+        .article-content h2 {
+            color: #667eea;
+            margin: 2rem 0 1rem 0;
+            font-size: 1.8rem;
+        }
+        
+        .article-content h3 {
+            color: #667eea;
+            margin: 1.5rem 0 0.5rem 0;
+            font-size: 1.4rem;
+        }
+        
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .article-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .article-content code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .article-content pre {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+        
+        .article-content pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .back-to-blog {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin-bottom: 2rem;
+        }
+        
+        .back-to-blog:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .related-posts {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 3rem;
+        }
+        
+        .related-posts h3 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+        
+        .related-posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .related-post-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .related-post-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .related-post-item h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .related-post-item p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        /* 响应式优化 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .article-title {
+                font-size: 2rem;
+            }
+            
+            .article-container {
+                padding: 1.5rem;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+        }
+        
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">🤖 Agent Engineer</div>
+            <ul class="nav-links">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="index.html#skills">技能</a></li>
+                <li><a href="index.html#projects">项目</a></li>
+                <li><a href="index.html#blog">博客</a></li>
+                <li><a href="index.html#contact">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <a href="index.html#blog" class="back-to-blog">
+                <i class="fas fa-arrow-left"></i> 返回博客
+            </a>
+            
+            <article class="article-container">
+                <header class="article-header">
+                    <h1 class="article-title">强化学习在代理决策中的应用</h1>
+                    <div class="article-meta">
+                        <i class="fas fa-calendar"></i> 2026-02-10
+                        <i class="fas fa-user"></i> Agent Engineer
+                        <i class="fas fa-clock"></i> 阅读时间：12分钟
+                    </div>
+                </header>
+                
+                <div class="article-content">
+                    <p>强化学习（Reinforcement Learning, RL）是机器学习的一个重要分支，它通过智能体与环境的交互来学习最优策略。在AI代理系统中，强化学习可以显著提升代理的决策能力，使其能够适应复杂的环境和任务需求。本文将深入探讨强化学习在代理决策中的应用，包括经典算法、实践技巧和实际案例。</p>
+                    
+                    <h2>1. 强化学习基础</h2>
+                    
+                    <h3>1.1 基本概念</h3>
+                    <p>强化学习的核心概念包括智能体（Agent）、环境（Environment）、状态（State）、动作（Action）、奖励（Reward）和策略（Policy）。</p>
+                    
+                    <pre><code># 强化学习基本概念
+class ReinforcementLearning:
+    def __init__(self):
+        self.state = None
+        self.action = None
+        self.reward = None
+        self.policy = None
+    
+    def step(self, state):
+        # 根据当前状态选择动作
+        self.action = self.policy.select_action(state)
+        
+        # 执行动作并获得奖励
+        self.reward = self.environment.step(self.action)
+        
+        # 更新状态
+        self.state = self.environment.get_state()
+        
+        return self.action, self.reward</code></pre>
+                    
+                    <h3>1.2 马尔可夫决策过程</h3>
+                    <p>强化学习的理论基础是马尔可夫决策过程（MDP），它描述了智能体在环境中的决策过程。</p>
+                    
+                    <h2>2. 经典强化学习算法</h2>
+                    
+                    <h3>2.1 Q-Learning</h3>
+                    <p>Q-Learning是一种无模型的强化学习算法，通过学习状态-动作值函数来获得最优策略。</p>
+                    
+                    <pre><code>import numpy as np
+
+class QLearning:
+    def __init__(self, state_space, action_space, learning_rate=0.1, discount_factor=0.95):
+        self.q_table = np.zeros((state_space, action_space))
+        self.learning_rate = learning_rate
+        self.discount_factor = discount_factor
+    
+    def learn(self, state, action, reward, next_state):
+        # Q-Learning更新规则
+        current_q = self.q_table[state, action]
+        max_next_q = np.max(self.q_table[next_state])
+        new_q = current_q + self.learning_rate * (reward + self.discount_factor * max_next_q - current_q)
+        self.q_table[state, action] = new_q
+    
+    def get_action(self, state, epsilon=0.1):
+        # Epsilon-greedy策略
+        if np.random.random() < epsilon:
+            return np.random.randint(self.q_table.shape[1])
+        else:
+            return np.argmax(self.q_table[state])</code></pre>
+                    
+                    <h3>2.2 Deep Q-Network (DQN)</h3>
+                    <p>DQN使用深度神经网络来近似Q函数，能够处理高维状态空间。</p>
+                    
+                    <pre><code>import torch
+import torch.nn as nn
+import torch.optim as optim
+
+class DQN(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(DQN, self).__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.fc2 = nn.Linear(hidden_size, hidden_size)
+        self.fc3 = nn.Linear(hidden_size, output_size)
+    
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        return self.fc3(x)
+
+class DQNAgent:
+    def __init__(self, state_size, action_size):
+        self.model = DQN(state_size, 128, action_size)
+        self.target_model = DQN(state_size, 128, action_size)
+        self.optimizer = optim.Adam(self.model.parameters())
+        self.memory = []
+        self.gamma = 0.95
+        
+    def remember(self, state, action, reward, next_state, done):
+        self.memory.append((state, action, reward, next_state, done))
+    
+    def act(self, state, epsilon=0.1):
+        if np.random.random() < epsilon:
+            return np.random.randint(action_size)
+        else:
+            with torch.no_grad():
+                state_tensor = torch.FloatTensor(state).unsqueeze(0)
+                q_values = self.model(state_tensor)
+                return np.argmax(q_values.numpy())
+    
+    def replay(self, batch_size):
+        if len(self.memory) < batch_size:
+            return
+        
+        batch = np.random.choice(len(self.memory), batch_size, replace=False)
+        for i in batch:
+            state, action, reward, next_state, done = self.memory[i]
+            
+            target = reward
+            if not done:
+                with torch.no_grad():
+                    next_state_tensor = torch.FloatTensor(next_state).unsqueeze(0)
+                    target = reward + self.gamma * torch.max(self.target_model(next_state_tensor)).item()
+            
+            state_tensor = torch.FloatTensor(state).unsqueeze(0)
+            current_q = self.model(state_tensor)[0][action]
+            
+            loss = nn.MSELoss()(current_q, target)
+            self.optimizer.zero_grad()
+            loss.backward()
+            self.optimizer.step()</code></pre>
+                    
+                    <h3>2.3 Policy Gradient Methods</h3>
+                    <p>策略梯度方法直接优化策略函数，适用于连续动作空间。</p>
+                    
+                    <h2>3. 在AI代理中的应用</h2>
+                    
+                    <h3>3.1 游戏AI</h3>
+                    <p>强化学习在游戏AI中取得了巨大成功，如AlphaGo、OpenAI Five等。</p>
+                    
+                    <h3>3.2 机器人控制</h3>
+                    <p>强化学习可以用于机器人的运动控制、路径规划等任务。</p>
+                    
+                    <h3>3.3 自动驾驶</h3>
+                    <p>在自动驾驶中，强化学习可以用于决策控制、行为预测等。</p>
+                    
+                    <h2>4. 实践技巧</h2>
+                    
+                    <h3>4.1 环境设计</h3>
+                    <p>设计合适的环境对强化学习至关重要。环境应该能够提供足够的反馈信息，并且状态空间应该尽可能简洁。</p>
+                    
+                    <h3>4.2 奖励函数设计</h3>
+                    <p>奖励函数的设计直接影响学习效果。奖励函数应该明确反映任务目标，并且避免奖励稀疏问题。</p>
+                    
+                    <pre><code>class RewardFunction:
+    def __init__(self):
+        self.goal_reward = 100
+        self.step_penalty = -1
+        self.collision_penalty = -50
+    
+    def calculate_reward(self, state, action, next_state):
+        # 基础步数惩罚
+        reward = self.step_penalty
+        
+        # 检查是否达到目标
+        if self.is_goal_reached(next_state):
+            reward += self.goal_reward
+        
+        # 检查碰撞
+        if self.has_collision(next_state):
+            reward += self.collision_penalty
+        
+        return reward</code></pre>
+                    
+                    <h3>4.3 探索与利用的平衡</h3>
+                    <p>在强化学习中，探索（Exploration）和利用（Exploitation）的平衡非常重要。常用的策略包括Epsilon-greedy、UCB、Thompson Sampling等。</p>
+                    
+                    <h2>5. 实际案例</h2>
+                    
+                    <h3>5.1 智能推荐系统</h3>
+                    <p>使用强化学习构建个性化推荐系统，通过用户反馈来优化推荐策略。</p>
+                    
+                    <h3>5.2 自动交易系统</h3>
+                    <p>在金融领域，强化学习可以用于构建自动交易系统，通过历史数据学习最优交易策略。</p>
+                    
+                    <h2>6. 挑战与解决方案</h2>
+                    
+                    <h3>6.1 样本效率</h3>
+                    <p>传统强化学习算法通常需要大量样本，可以通过经验回放、迁移学习等技术提高样本效率。</p>
+                    
+                    <h3>6.2 稳定性问题</h3>
+                    <p>深度强化学习常常面临训练不稳定的问题，可以使用目标网络、经验回放、Double DQN等技术来提高稳定性。</p>
+                    
+                    <h2>7. 未来发展趋势</h2>
+                    
+                    <p>强化学习正在向多智能体强化学习、层次化强化学习、离线强化学习等方向发展。这些技术将进一步拓展强化学习的应用范围。</p>
+                    
+                    <h2>8. 总结</h2>
+                    
+                    <p>强化学习为AI代理的决策提供了强大的工具。通过合理选择算法、设计合适的奖励函数和探索策略，我们可以构建出具有强大决策能力的AI代理系统。在实际应用中，需要根据具体任务的特点选择合适的强化学习方法，并不断优化和调整。</p>
+                    
+                    <p>随着技术的不断发展，强化学习将在更多领域发挥重要作用，为AI代理系统带来更多的可能性。</p>
+                </div>
+                
+                <div class="related-posts">
+                    <h3>相关文章</h3>
+                    <div class="related-posts-list">
+                        <a href="ai-agent-architecture.html" class="related-post-item">
+                            <h4>AI代理架构设计最佳实践</h4>
+                            <p>深入探讨现代AI代理系统的架构设计原则，包括模块化设计、状态管理和性能优化...</p>
+                        </a>
+                        <a href="high-availability.html" class="related-post-item">
+                            <h4>构建高可用AI代理系统</h4>
+                            <p>分享构建高可用AI代理系统的关键技术，包括负载均衡、故障恢复和监控告警...</p>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Agent Engineer. 专注于AI代理技术.</p>
+        </div>
+    </footer>
+</body>
+</html>
